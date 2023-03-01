@@ -47,7 +47,7 @@ const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
       setPhone('');
       setCategories('');
     },
-  }), []);
+  }), [setCategories]);
 
   useEffect(() => {
     async function loadCategories() {
