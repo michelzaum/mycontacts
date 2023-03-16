@@ -6,14 +6,12 @@ import {
   Container,
   Card,
   ListHeader,
-  EmptyListContainer,
   SearchNotFoundContainer,
 } from './styles';
 
 import arrow from '../../assets/images/icons/arrow.svg';
 import edit from '../../assets/images/icons/edit.svg';
 import trash from '../../assets/images/icons/trash.svg';
-import emptyBox from '../../assets/images/empty-box.svg';
 import magnifierQuestion from '../../assets/images/magnifier-question.svg';
 
 import Loader from '../../components/Loader';
@@ -23,6 +21,7 @@ import useHome from './useHome';
 import InputSearch from './components/InputSearch';
 import Header from './components/Header';
 import ErrorStatus from './components/ErrorStatus';
+import EmptyList from './components/EmptyList';
 
 export default function Home() {
   const {
@@ -57,19 +56,13 @@ export default function Home() {
         quantityOfContacts={contacts.length}
         quantityOfFilteredContacts={filteredContacts.length}
       />
-      {hasError && (
-        <ErrorStatus onTryAgain={handleTryAgain} />
-      )}
+
+      {hasError && <ErrorStatus onTryAgain={handleTryAgain} />}
+
       {!hasError && (
         <>
           {(contacts.length < 1 && !isLoading) && (
-            <EmptyListContainer>
-              <img src={emptyBox} alt="Empty box" />
-              <p>
-                Você ainda não tem nenhum contato cadastrado! Clique no botão
-                <strong>”Novo contato”</strong> à cima para cadastrar o seu primeiro!
-              </p>
-            </EmptyListContainer>
+            <EmptyList />
           )}
           {(contacts.length > 0 && filteredContacts.length < 1) && (
             <SearchNotFoundContainer>
