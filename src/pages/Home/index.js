@@ -6,13 +6,11 @@ import {
   Container,
   Card,
   ListHeader,
-  SearchNotFoundContainer,
 } from './styles';
 
 import arrow from '../../assets/images/icons/arrow.svg';
 import edit from '../../assets/images/icons/edit.svg';
 import trash from '../../assets/images/icons/trash.svg';
-import magnifierQuestion from '../../assets/images/magnifier-question.svg';
 
 import Loader from '../../components/Loader';
 import Modal from '../../components/Modal';
@@ -22,6 +20,7 @@ import InputSearch from './components/InputSearch';
 import Header from './components/Header';
 import ErrorStatus from './components/ErrorStatus';
 import EmptyList from './components/EmptyList';
+import SearchNotFound from './components/SearchNotFound';
 
 export default function Home() {
   const {
@@ -65,12 +64,9 @@ export default function Home() {
             <EmptyList />
           )}
           {(contacts.length > 0 && filteredContacts.length < 1) && (
-            <SearchNotFoundContainer>
-              <img src={magnifierQuestion} alt="Magnifier question" />
-              <span>
-                Nenhum resultado foi encontrado para <strong>{searchTerm}</strong>.
-              </span>
-            </SearchNotFoundContainer>
+            <SearchNotFound
+              searchTerm={searchTerm}
+            />
           )}
           {filteredContacts.length > 0 && (
             <ListHeader orderBy={orderBy}>
