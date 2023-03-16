@@ -6,7 +6,6 @@ import {
   Container,
   Card,
   ListHeader,
-  ErrorContainer,
   EmptyListContainer,
   SearchNotFoundContainer,
 } from './styles';
@@ -14,17 +13,16 @@ import {
 import arrow from '../../assets/images/icons/arrow.svg';
 import edit from '../../assets/images/icons/edit.svg';
 import trash from '../../assets/images/icons/trash.svg';
-import sad from '../../assets/images/sad.svg';
 import emptyBox from '../../assets/images/empty-box.svg';
 import magnifierQuestion from '../../assets/images/magnifier-question.svg';
 
 import Loader from '../../components/Loader';
-import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import useHome from './useHome';
 
 import InputSearch from './components/InputSearch';
 import Header from './components/Header';
+import ErrorStatus from './components/ErrorStatus';
 
 export default function Home() {
   const {
@@ -60,17 +58,8 @@ export default function Home() {
         quantityOfFilteredContacts={filteredContacts.length}
       />
       {hasError && (
-        <ErrorContainer>
-          <img src={sad} alt="Sad" />
-          <div className="details">
-            <strong>Ocorreu um erro ao obter os seus contatos!</strong>
-            <Button type="button" onClick={handleTryAgain}>
-              Tentar novamente
-            </Button>
-          </div>
-        </ErrorContainer>
+        <ErrorStatus onTryAgain={handleTryAgain} />
       )}
-
       {!hasError && (
         <>
           {(contacts.length < 1 && !isLoading) && (
