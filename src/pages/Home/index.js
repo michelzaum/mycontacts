@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import {
   Container,
-  InputSearchContainer,
   Card,
   Header,
   ListHeader,
@@ -24,6 +23,7 @@ import Loader from '../../components/Loader';
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import useHome from './useHome';
+import InputSearch from './components/InputSearch';
 
 export default function Home() {
   const {
@@ -47,26 +47,11 @@ export default function Home() {
   return (
     <Container>
       <Loader isLoading={isLoading} />
-      <Modal
-        danger
-        isLoading={isLoadingDelete}
-        visible={isDeleteModalVisible}
-        title={`Tem certeza que deseja remover o contato "${contactBeingDeleted?.name}"?`}
-        confirmLabel="Deletar"
-        onCancel={handleCloseDeleteModal}
-        onConfirm={handleConfirmDeleteContact}
-      >
-        <p>Esta ação não poderá ser desfeita!</p>
-      </Modal>
       {contacts.length > 0 && (
-        <InputSearchContainer>
-          <input
-            value={searchTerm}
-            type="text"
-            placeholder="Pesquise pelo nome..."
-            onChange={handleChangeSearchTerm}
-          />
-        </InputSearchContainer>
+        <InputSearch
+          value={searchTerm}
+          onChange={handleChangeSearchTerm}
+        />
       )}
       <Header
         justifyContent={
@@ -153,6 +138,17 @@ export default function Home() {
               </div>
             </Card>
           ))}
+          <Modal
+            danger
+            isLoading={isLoadingDelete}
+            visible={isDeleteModalVisible}
+            title={`Tem certeza que deseja remover o contato "${contactBeingDeleted?.name}"?`}
+            confirmLabel="Deletar"
+            onCancel={handleCloseDeleteModal}
+            onConfirm={handleConfirmDeleteContact}
+          >
+            <p>Esta ação não poderá ser desfeita!</p>
+          </Modal>
         </>
       )}
     </Container>
