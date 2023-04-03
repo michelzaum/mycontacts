@@ -8,7 +8,7 @@ import useAnimatedList from '../../../hooks/useAnimatedList';
 
 export default function ToastContainer() {
   const {
-    setItens: setMessages,
+    setItems: setMessages,
     handleRemoveItem,
     renderList,
   } = useAnimatedList();
