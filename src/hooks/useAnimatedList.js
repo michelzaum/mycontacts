@@ -1,8 +1,15 @@
-import { useCallback, useState } from 'react';
+import {
+  useCallback,
+  useRef,
+  useState,
+  createRef,
+} from 'react';
 
 export default function useAnimatedList(initialValue = []) {
   const [items, setItens] = useState(initialValue);
-  const [pendingRemovalItensIds, setPendingRemovalItemsIds] = useState([]);
+  const [pendingRemovalItemsIds, setPendingRemovalItemsIds] = useState([]);
+
+  const animatedRefs = useRef(new Map());
 
   const handleRemoveItem = useCallback((id) => {
     setPendingRemovalItemsIds(
@@ -10,22 +17,35 @@ export default function useAnimatedList(initialValue = []) {
     );
   }, []);
 
-  const handleAnimationEnd = useCallback((id) => {
-    setItens((prevState) => prevState.filter((item) => item.id !== id));
-    setPendingRemovalItemsIds((prevState) => prevState.filter((itemId) => itemId !== id));
+  // const handleAnimationEnd = useCallback((id) => {
+  //   setItens((prevState) => prevState.filter((item) => item.id !== id));
+  //   setPendingRemovalItemsIds((prevState) => prevState.filter((itemId) => itemId !== id));
+  // }, []);
+
+  const getAnimatedRef = useCallback((itemId) => {
+    let animatedRef = animatedRefs.current.get(itemId);
+
+    if (!animatedRef) {
+      animatedRef = createRef();
+      animatedRefs.current.set(itemId, animatedRef);
+    }
+
+    return animatedRef;
   }, []);
 
   const renderList = useCallback((renderItem) => (
-    items.map((item) => renderItem(item, {
-      isLeaving: pendingRemovalItensIds.includes(item.id),
-    }))
-  ), [items, pendingRemovalItensIds]);
+    items.map((item) => {
+      const isLeaving = pendingRemovalItemsIds.includes(item.id);
+      const animatedRef = getAnimatedRef(item.id);
+
+      return renderItem(item, { isLeaving, animatedRef });
+    })
+  ), [items, pendingRemovalItemsIds, getAnimatedRef]);
 
   return {
     items,
     setItens,
     handleRemoveItem,
-    handleAnimationEnd,
     renderList,
   };
 }
